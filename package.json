@@ -1,0 +1,19 @@
+{
+    "name": "fatabot",
+    "version": "0.0.1",
+    "description": "a simple irc bot with no feature and no future",
+    "contributors": [
+    {
+      "name": "Benjamin Clay",
+      "email": "bclay@ternel.net"
+    },
+    {
+      "name": "Matthieu Bouron",
+      "email": "matthieu.bouron@gmail.com"
+    }
+  ],
+  "dependencies" : {
+    "nconf"   :  "0.6.4",
+    "irc"     :  "0.3.4"
+  }
+}
