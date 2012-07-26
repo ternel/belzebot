@@ -11,8 +11,8 @@ nconf.defaults({
     'debug': 'false'
   });
 
-var client = new irc.Client(nconf.get('irc:server'), 'fatabot', {
-    channels: ['#eistitest'],
+var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
+    channels: nconf.get('irc:channels'),
     debug: nconf.get('debug'),
 });
 
@@ -31,10 +31,16 @@ function parseMsg(from, to, message) {
         var cmd = message.split(' ');
         console.log(from + ' => ' + to + ': ' + message);
 
+        // @TODO: ajouter la possibilité de préciser le chan sur lequel envoyer le message dans la commande
+        // ex: !lastfm #channel ternel
         if ('fatabot' == to) {
-          to = '#eistitest';
+          to = '#eistibranlos';
         }
 
+        /**
+         * LASTFM : fetch last song played
+         * @TODO : API Key in conf file
+         */
         if ('!lastfm' == cmd[0] && undefined !== cmd[1]) {
             var lastfm_url = "http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&api_key=8c4df84b2b7c91d93a992dcccee83ba0&format=json"
             lastfm_url = lastfm_url+'&user='+cmd[1];
@@ -64,8 +70,6 @@ function parseMsg(from, to, message) {
             }).on('error', function(e) {
               console.log("Got error: " + e.message);
             });
-
-
         }
     }
 }

@@ -9,9 +9,12 @@ TODO :
 ==============
 
 - <del>Dependencies : package.json ? pour nconf / irc</del>
-- config : -dist
+- <del>config : -dist</del>
 - Music : link spotify / deezer / youtube ?
 - Trouver des idées à la con :)
+- QOTD
+- POTD (Pix)
+- Insultotron :D
 
 
 
