@@ -10,6 +10,10 @@
     {
       "name": "Matthieu Bouron",
       "email": "matthieu.bouron@gmail.com"
+    },
+    {
+      "name": "Joel Wurtz",
+      "email": "joel.wurtz@gmail.com"
     }
   ],
   "dependencies" : {
