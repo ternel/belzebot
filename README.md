@@ -13,6 +13,7 @@ TODO :
 - <del>Dependencies : package.json ? pour nconf / irc</del>
 - <del>config : -dist</del>
 - Music : link spotify / deezer / youtube ?
+- Statistiques
 - Trouver des idées à la con :)
 - QOTD
 - POTD (Pix)
