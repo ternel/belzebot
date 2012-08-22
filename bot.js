@@ -37,18 +37,32 @@ function parseMsg(from, to, message) {
           to = '#eistibranlos';
         }
 
-        /**
-         * LASTFM : fetch last song played
-         * @TODO : API Key in conf file
-         */
+        // LastFM : Last Track
+        // @TODO : move lastfm code in a lastfm module
+        // @TODO : LastSong + Spotify link (see Spotify search API), + deezer link (Deezer API)
         if ('!lastfm' == cmd[0] && undefined !== cmd[1]) {
-            LastFM_GetLastSong(cmd);
+            LastFM_GetLastSong(from, to, cmd);
+        }
 
+        if ('!mateo' == cmd[0]) {
+          Bullshit_GetMateoReturn(from, to, cmd);
+        }
+
+        if ('!link' == cmd[0]) {
+
+          if ('add' == cmd[1]) {
+            Links_saveLink(from, to, cmd);
+          }
+
+          if ('last' == cmd[1]) {
+            Links_lastsLink(from, to, cmd);
+          }
         }
     }
 }
 
-function LastFM_GetLastSong(to, user, data) {
+function LastFM_GetLastSong(from, to, cmd) {
+  log("[LastFM] LastFM_GetLastSong");
   var user = cmd[1];
 
   var options = {
@@ -65,6 +79,7 @@ function LastFM_GetLastSong(to, user, data) {
       {
         var parsed_data = JSON.parse(json_data);
         var track = parsed_data.recenttracks.track[0];
+
         client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name);
         json_data = '';
       }
@@ -72,13 +87,82 @@ function LastFM_GetLastSong(to, user, data) {
       {}
     });
 
-    log("Got response: " + res.statusCode);
+    log("[LastFM] Got response: " + res.statusCode);
 
   }).on('error', function(e) {
-    log("Got error: " + e.message);
+    log("[LastFM] Got error: " + e.message);
   });
 }
 
+
+function Bullshit_GetMateoReturn(from, to, cmd) {
+  //@ 9 septembre
+  var moment = require('moment');
+  moment.lang('fr');
+  var start = moment();
+  var end = moment([2012, 8, 9]);
+
+  client.say(to, "mateo revient du Québec dans "+start.from(end, true)+", à part si il se fait manger par un ours.");
+}
+
+
+function Links_saveLink(from, to, cmd) {
+  var catArr = new Array('dev', 'fun', 'sexy', 'nsfw');
+  var cat = cmd[2];
+  var url = cmd[3];
+
+  var RegExp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+  if (!RegExp.test(url) || !(catArr.inArray(cat))) {
+      client.say(to, "[Links:Help] Utilisation : !link add [dev|fun|sexy|nsfw] url");
+      return false;
+  }
+
+  var redis = require("redis"),
+        redisClient = redis.createClient();
+
+  // save in redis
+  redisClient.on("error", function (err) {
+    console.log("Error " + err);
+  });
+
+  redisClient.lpush(cat, url, redis.print);
+}
+
+function Links_lastsLink(from, to, cmd) {
+  var cat   = cmd[2];
+  var limit = 5;
+  var redis = require("redis"),
+        redisClient = redis.createClient();
+
+  if ('undefined' != cmd[2]) {
+    limit = parseInt(cmd[2], 10);
+  }
+
+  // get in redis
+  var links = redisClient.lrange(cat, 0, 10, function (err, replies) {
+    if (err) {
+        return console.error("error response - " + err);
+    }
+
+    console.log(replies.length + " replies:");
+    replies.forEach(function (reply, i) {
+        console.log("    " + i + ": " + reply);
+        client.say(to, "[Links:"+cat+"] "+ reply);
+    });
+  });
+}
+
+
+Array.prototype.inArray = function(p_val) {
+    var l = this.length;
+    for(var i = 0; i < l; i++) {
+        if(this[i] == p_val) {
+            return true;
+        }
+    }
+    return false;
+}
 
 function log(msg) {
   if (nconf.get('debug')) {
