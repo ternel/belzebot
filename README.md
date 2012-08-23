@@ -1,7 +1,7 @@
-fatabot
+Belzebot
 =======
 
-Fatabot, le bot pourri du chan IRC #eistibranlos, en nodejs !
+Belzebot, anciennement fatabot (mais mateo voulait récuperer le nom de son bot), le bot pourri du chan IRC #eistibranlos, en nodejs !
 Utilise "nconf" pour la configuration et "irc"
 
 Doc "irc" : http://node-irc.readthedocs.org/en/latest/index.html
