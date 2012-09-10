@@ -58,6 +58,11 @@ function parseMsg(from, to, message) {
             Links_lastsLink(from, to, cmd);
           }
         }
+
+        // Random item from reddit :)
+        if ('!reddit' == cmd[0]) {
+          Reddit_getRandomLink(from, to, cmd);
+        }
     }
 }
 
@@ -103,6 +108,44 @@ function Bullshit_GetMateoReturn(from, to, cmd) {
   var end = moment([2012, 8, 9]);
 
   client.say(to, "mateo revient du Québec dans "+start.from(end, true)+", à part si il se fait manger par un ours.");
+}
+
+
+function Reddit_getRandomLink(from, to, cmd) {
+  log("[Reddit] Reddit_getRandomLink");
+  var subreddit = cmd[1];
+  var limit = 5;
+
+  var options = {
+    host: 'www.reddit.com',
+    port: 80,
+    path: '/r/'+subreddit+'/.json?limit='+limit,
+    'user-agent': 'belzebot, a shitty nodejs bot by /u/ternel'
+  };
+
+  http.get(options, function(res) {
+    var json_data = '';
+    res.on('data', function (chunk) {
+      json_data = json_data+chunk;
+      try
+      {
+        var parsed_data = JSON.parse(json_data);
+        var min = 0;
+        var rand_index = Math.floor(Math.random() * (limit - min + 1)) + min;
+
+        client.say(to, "[Reddit:"+subreddit+":"+rand_index+"] "+parsed_data.data.children[rand_index].data.title+ " - "+parsed_data.data.children[rand_index].data.url);
+
+        json_data = '';
+      }
+      catch(e)
+      {}
+    });
+
+    log("[Reddit] Got response from "+options.host+options.path+": " + res.statusCode);
+
+  }).on('error', function(e) {
+    log("[Reddit] Got error: " + e.message);
+  });
 }
 
 
