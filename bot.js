@@ -84,8 +84,32 @@ function LastFM_GetLastSong(from, to, cmd) {
       {
         var parsed_data = JSON.parse(json_data);
         var track = parsed_data.recenttracks.track[0];
+        var optionsYoutube = {
+            host: 'https://gdata.youtube.com',
+            port: 80,
+            path: '/feeds/api/videos?q='+track.artist['#text']+'+'+track.name
+        };
+        
+        http.get(optionsYoutube, function (res) {
+            var json_data = "";
+            red.on('data', function(chunck) {
+                json_data += chunk;
+                try {
+                    var parsed_data = JSON.parse(json_data);
+                    var youtube_entry = parsed_data.feed.entry[0];
+                    var link = "";
+                    for (key in youtube_entry.link) {
+                        if (youtube_entry.link[key].type == "text/html") {
+                            link = youtube_entry.link[key].href;
+                        }
+                    }
+                    
+                    client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name+' - '+link);
+                    
+                } catch (e) {}
+            });
+        });
 
-        client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name+' - '+track.url);
         json_data = '';
       }
       catch(e)
