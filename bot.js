@@ -85,7 +85,7 @@ function LastFM_GetLastSong(from, to, cmd) {
         var parsed_data = JSON.parse(json_data);
         var track = parsed_data.recenttracks.track[0];
 
-        client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name);
+        client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name+' - '+track.url);
         json_data = '';
       }
       catch(e)
