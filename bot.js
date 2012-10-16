@@ -17,7 +17,6 @@ nconf.defaults({
 
 pluginsManager.load('plugins');
 
-
 var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
     channels: nconf.get('irc:channels'),
     debug: nconf.get('debug'),
@@ -49,15 +48,11 @@ function parseMsg(from, to, message) {
         // @TODO : move lastfm code in a lastfm module
         // @TODO : LastSong + Spotify link (see Spotify search API), + deezer link (Deezer API)
         if ('!lastfm' == cmd[0] && undefined !== cmd[1]) {
-            LastFM_GetLastSong(from, to, cmd);
+            pluginsManager.plugins.LastFM.LastSong(client, from, to, cmd, nconf.get('lastfm:api_key'), logger);
         }
 
         if ('!insult' == cmd[0]) {
-          console.log(Object.keys(pluginsManager));
-          console.log(pluginsManager);
-
           pluginsManager.plugins.Misc.Insult(client, from, to, cmd);
-          //Bullshit_GetMateoReturn(from, to, cmd);
         }
 
         if ('!link' == cmd[0]) {
@@ -76,58 +71,6 @@ function parseMsg(from, to, message) {
           Reddit_getRandomLink(from, to, cmd);
         }
     }
-}
-
-function LastFM_GetLastSong(from, to, cmd) {
-  logger.info("[LastFM] LastFM_GetLastSong");
-  var user = cmd[1];
-
-  var options = {
-    host: 'ws.audioscrobbler.com',
-    port: 80,
-    path: '/2.0/?method=user.getrecenttracks&api_key='+nconf.get('lastfm:api_key')+'&format=json&user='+user
-  };
-
-  http.get(options, function(res) {
-    var json_data = '';
-    res.on('data', function (chunk) {
-      json_data = json_data+chunk;
-      try
-      {
-        var parsed_data = JSON.parse(json_data);
-        var track = parsed_data.recenttracks.track[0];
-        var optionsYoutube = {
-            host: 'gdata.youtube.com',
-            port: 80,
-            path: '/feeds/api/videos?alt=json&q='+encodeURIComponent(track.artist['#text'])+'+'+encodeURIComponent(track.name)
-        };
-
-        http.get(optionsYoutube, function (res) {
-            var json_data = "";
-            res.on('data', function(chunk) {
-                json_data += chunk;
-                try {
-                    var parsed_data = JSON.parse(json_data);
-                    var youtube_entry = parsed_data.feed.entry[0];
-                    var link = youtube_entry.media$group.media$player[0].url;
-
-                    client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name+' - '+link);
-
-                } catch (e) {}
-            });
-        });
-
-        json_data = '';
-      }
-      catch(e)
-      {}
-    });
-
-    logger.info("[LastFM] Got response: " + res.statusCode);
-
-  }).on('error', function(e) {
-    logger.error("[LastFM] Got error: " + e.message);
-  });
 }
 
 
