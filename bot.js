@@ -1,6 +1,10 @@
-var nconf = require('nconf');
-var irc = require('irc');
-var http = require('http');
+var nconf   = require('nconf');
+var irc     = require('irc');
+var http    = require('http');
+var logger  = require('./lib/logger.js');
+var pluginsManager  = require('./lib/pluginsManager.js');
+
+
 
 // First consider commandline arguments and environment variables, respectively.
 nconf.argv().env();
@@ -9,11 +13,15 @@ nconf.argv().env();
 nconf.file({ file: 'config.json' });
 nconf.defaults({
     'debug': 'false'
-  });
+});
+
+pluginsManager.load('plugins');
+
 
 var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
     channels: nconf.get('irc:channels'),
     debug: nconf.get('debug'),
+    floodProtection: true
 });
 
 
@@ -29,7 +37,7 @@ client.addListener('pm', function (from, message) {
 function parseMsg(from, to, message) {
     if ('!' === message[0]) {
         var cmd = message.split(' ');
-        log(from + ' => ' + to + ': ' + message);
+        logger.info(from + ' => ' + to + ': ' + message);
 
         // @TODO: ajouter la possibilité de préciser le chan sur lequel envoyer le message dans la commande
         // ex: !lastfm #channel ternel
@@ -44,8 +52,12 @@ function parseMsg(from, to, message) {
             LastFM_GetLastSong(from, to, cmd);
         }
 
-        if ('!mateo' == cmd[0]) {
-          Bullshit_GetMateoReturn(from, to, cmd);
+        if ('!insult' == cmd[0]) {
+          console.log(Object.keys(pluginsManager));
+          console.log(pluginsManager);
+
+          pluginsManager.plugins.Misc.Insult(client, from, to, cmd);
+          //Bullshit_GetMateoReturn(from, to, cmd);
         }
 
         if ('!link' == cmd[0]) {
@@ -67,7 +79,7 @@ function parseMsg(from, to, message) {
 }
 
 function LastFM_GetLastSong(from, to, cmd) {
-  log("[LastFM] LastFM_GetLastSong");
+  logger.info("[LastFM] LastFM_GetLastSong");
   var user = cmd[1];
 
   var options = {
@@ -89,7 +101,7 @@ function LastFM_GetLastSong(from, to, cmd) {
             port: 80,
             path: '/feeds/api/videos?alt=json&q='+encodeURIComponent(track.artist['#text'])+'+'+encodeURIComponent(track.name)
         };
-        
+
         http.get(optionsYoutube, function (res) {
             var json_data = "";
             res.on('data', function(chunk) {
@@ -98,9 +110,9 @@ function LastFM_GetLastSong(from, to, cmd) {
                     var parsed_data = JSON.parse(json_data);
                     var youtube_entry = parsed_data.feed.entry[0];
                     var link = youtube_entry.media$group.media$player[0].url;
-                    
+
                     client.say(to, "[LastFM:"+user+"] "+track.artist['#text']+' - '+track.name+' - '+link);
-                    
+
                 } catch (e) {}
             });
         });
@@ -111,27 +123,16 @@ function LastFM_GetLastSong(from, to, cmd) {
       {}
     });
 
-    log("[LastFM] Got response: " + res.statusCode);
+    logger.info("[LastFM] Got response: " + res.statusCode);
 
   }).on('error', function(e) {
-    log("[LastFM] Got error: " + e.message);
+    logger.error("[LastFM] Got error: " + e.message);
   });
 }
 
 
-function Bullshit_GetMateoReturn(from, to, cmd) {
-  //@ 9 septembre
-  var moment = require('moment');
-  moment.lang('fr');
-  var start = moment();
-  var end = moment([2012, 8, 9]);
-
-  client.say(to, "mateo revient du Québec dans "+start.from(end, true)+", à part si il se fait manger par un ours.");
-}
-
-
 function Reddit_getRandomLink(from, to, cmd) {
-  log("[Reddit] Reddit_getRandomLink");
+  logger.info("[Reddit] Reddit_getRandomLink");
   var subreddit = cmd[1];
   var limit = 5;
 
@@ -160,10 +161,10 @@ function Reddit_getRandomLink(from, to, cmd) {
       {}
     });
 
-    log("[Reddit] Got response from "+options.host+options.path+": " + res.statusCode);
+    logger.info("[Reddit] Got response from "+options.host+options.path+": " + res.statusCode);
 
   }).on('error', function(e) {
-    log("[Reddit] Got error: " + e.message);
+    logger.error("[Reddit] Got error: " + e.message);
   });
 }
 
@@ -224,10 +225,4 @@ Array.prototype.inArray = function(p_val) {
         }
     }
     return false;
-}
-
-function log(msg) {
-  if (nconf.get('debug')) {
-    console.log(msg);
-  }
 }
