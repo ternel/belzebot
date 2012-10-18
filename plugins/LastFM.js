@@ -58,6 +58,6 @@ LastFM.LastSong = function LastSong(client, from, to, cmd, api_key, logger) {
         logger.error("[LastFM] Got error: " + e.message);
     }
   });
-}
+};
 
 module.exports.LastFM = LastFM;
