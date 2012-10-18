@@ -16,9 +16,9 @@ CleverbotPlugin.handle = function(client, from, to, message) {
         to = '#eistibranlos';
     }
 
-    match = message.match(/^!cleverbot (.+?)/gi);
+    match = message.match(/^!cleverbot (.+?)$/gi);
 
-    Cbot.write({ message: match[1] }, function(data) {
+    Cbot.write(match[1], function(data) {
         client.say(to, data.message);
     });
 };
