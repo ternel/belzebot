@@ -1,4 +1,5 @@
 var Debilotron = {};
+var nconf = require('nconf');
 
 Debilotron.support = function (message) {
     return (message[0] !== '!');

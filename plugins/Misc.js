@@ -1,4 +1,5 @@
 var Misc = {};
+var nconf = require('nconf');
 
 Misc.support = function (message) {
     return message.match(/^!insult$/);
