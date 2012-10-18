@@ -35,7 +35,7 @@ Debilotron.handle = function (client, from, to, cmd) {
     }
     
     if (cmd.match(/poney/gi)) {
-        client.say(to, "♪♪ Des chevaux par milliers  ♪♪");
+        client.say(to, "♪♪ Des poneys par milliers ♪♪");
     }
 
     if (cmd == "lol" || cmd == "\\o/") {
