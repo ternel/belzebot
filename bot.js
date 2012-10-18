@@ -16,13 +16,17 @@ nconf.defaults({
     'password': 'password'
 });
 
-pluginsManager.load('plugins');
+loadedMessage = pluginsManager.load('plugins');
 
 var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
     channels : nconf.get('irc:channels'),
     debug : nconf.get('debug'),
     floodProtection : true
 });
+
+for (var channel in nconf.get('irc:channels')) {
+    client.say(channel, "Belzebot vous souahites pleins de chocobisoux ("+loadedMessage+")");
+}
 
 client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
