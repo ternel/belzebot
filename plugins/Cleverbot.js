@@ -1,12 +1,14 @@
-var Cleverbot = {};
+var CleverbotPlugin = {};
 var nconf = require('nconf');
-var cleverBotLib = require('../lib/cleverbot.js');
+var CleverBot = require('../lib/cleverbot.js');
 
-Cleverbot.support = function(message) {
+Cbot = new CleverBot;
+
+CleverbotPlugin.support = function(message) {
     return message.match(/^!cleverbot (.+?)/gi);
 };
 
-Cleverbot.handle = function(client, from, to, message) {
+CleverbotPlugin.handle = function(client, from, to, message) {
     // @TODO: ajouter la possibilité de préciser le chan sur lequel
     // envoyer le message dans la commande
     // ex: !lastfm #channel ternel
@@ -16,9 +18,9 @@ Cleverbot.handle = function(client, from, to, message) {
 
     match = message.match(/^!cleverbot (.+?)/gi);
 
-    cleverBotLib.write(match[1], function(data) {
-        client.say(to, data);
+    Cbot.write({ message: match[1] }, function(data) {
+        client.say(to, data.message);
     });
 };
 
-module.exports.Cleverbot = Cleverbot;
+module.exports.CleverbotPlugin = CleverbotPlugin;
