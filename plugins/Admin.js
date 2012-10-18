@@ -41,4 +41,4 @@ Admin.update = function (client, from, to, cmd) {
     });
 };
 
-module.exports.Admin = new Admin;
+module.exports.Admin = Admin;
