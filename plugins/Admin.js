@@ -36,19 +36,19 @@ Admin.restart = function (client, from, to, cmd) {
 };
 
 Admin.update = function (client, from, to, cmd) {
-    client.say(to, "Updating bot ...");
+    client.say(from, "Updating bot ...");
     
     exec("git pull origin master", function (error, stdout, stderr) {
         if (stdout) {
-            client.say(to, stdout);
+            client.say(from, stdout);
         }
         
         if (stderr) {
-            client.say(to, stderr);
+            client.say(from, stderr);
         }
         
         if (error) {
-            client.say(to, error);
+            client.say(from, error);
         }
     });
 };
