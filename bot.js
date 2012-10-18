@@ -27,7 +27,7 @@ var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
 client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
 
-PluginMessageListener = function (from, to, message) {
+function PluginMessageListener(from, to, message) {
     // @TODO: ajouter la possibilité de préciser le chan sur lequel
     // envoyer le message dans la commande
     // ex: !lastfm #channel ternel
@@ -36,8 +36,10 @@ PluginMessageListener = function (from, to, message) {
     }
     
     for (var plugin in pluginsManager.plugins) {
-        if (plugin.support(message)) {
-            plugin.handle(client, from, to, message);
+        pluginObject = pluginsManager.plugins[plugin];
+        
+        if (pluginObject.support(message)) {
+            pluginObject.handle(client, from, to, message);
         }
     }
 };

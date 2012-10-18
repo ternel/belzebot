@@ -1,7 +1,8 @@
 var Admin = {};
+var nconf = require('nconf');
 var exec = require('child_process').exec;
 
-Admin.support = function(message) {
+Admin.support = function support(message) {
     cmd = message.split(' ');
     
     return (cmd[0] == '!admin' && cmd[1] == nconf.get('password'));

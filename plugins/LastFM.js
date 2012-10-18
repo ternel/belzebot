@@ -1,7 +1,7 @@
 var LastFM = {};
 var http = require('http');
 
-LastFm.support = function (message) {
+LastFM.support = function (message) {
     return message.match(/^!lastfm (.+?)/);
 };
 
