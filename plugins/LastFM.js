@@ -1,5 +1,7 @@
 var LastFM = {};
 var http = require('http');
+var nconf = require('nconf');
+var logger = require('../lib/logger.js');
 
 LastFM.support = function (message) {
     return message.match(/^!lastfm (.+?)/);
