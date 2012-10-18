@@ -24,9 +24,9 @@ var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
     floodProtection : true
 });
 
-for (var channel in nconf.get('irc:channels')) {
-    client.say(channel, "Belzebot vous souahites pleins de chocobisoux ("+loadedMessage+")");
-}
+client.addListener('topic', function(channel, topic, nick, message) {
+    client.say(channel, "Coucou \o/ ("+loadedMessage+")");
+});
 
 client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
