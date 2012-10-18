@@ -16,6 +16,10 @@ Debilotron.handle = function (client, from, to, cmd) {
     if (cmd.match(/réponse/gi) || cmd.match(/reponse/gi)) {
         client.say(to, 42);
     }
+    
+    if (cmd.match(/caca/gi) || cmd.match(/crotte/gi)) {
+        client.say(to, "Yumi, c'est bon le caca !");
+    }
 
     if (cmd.match(/merci/gi)) {
         client.say(to, "De rien " + from + ", ça m'a fait plaisir");
