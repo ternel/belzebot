@@ -1,6 +1,10 @@
 var Debilotron = {};
 
-Debilotron.Parser = function parser(client, from, to, cmd) {
+Debilotron.support = function (message) {
+    return (message[0] !== '!');
+};
+
+Debilotron.handle = function (client, from, to, cmd) {
     if (cmd.match(/réponse/gi) || cmd.match(/reponse/gi)) {
         client.say(to, 42);
     }
@@ -14,10 +18,13 @@ Debilotron.Parser = function parser(client, from, to, cmd) {
     }
 
     if (cmd.match(/T\'es (.+?)/)) {
-        match = cmd.match(/T\'es (.+)/);
-        client.say(to, "C'est toi le " + match[1]);
+        match = cmd.match(/T\'es (.+) ?(.+?)/);
+        client.say(to, "S'toi le " + match[1]);
     }
 
+    if (cmd == "lol" || cmd == "\\o/") {
+        client.say("Trop marrant :(");
+    }
 };
 
 module.exports.Debilotron = Debilotron;

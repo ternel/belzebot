@@ -12,7 +12,8 @@ nconf.file({
     file : 'config.json'
 });
 nconf.defaults({
-    'debug' : 'false'
+    'debug' : 'false',
+    'password': 'password'
 });
 
 pluginsManager.load('plugins');
@@ -23,13 +24,30 @@ var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
     floodProtection : true
 });
 
+client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
+
+PluginMessageListener = function (from, to, message) {
+    // @TODO: ajouter la possibilité de préciser le chan sur lequel
+    // envoyer le message dans la commande
+    // ex: !lastfm #channel ternel
+    if (nconf.get('bot-name') == to) {
+        to = '#eistibranlos';
+    }
+    
+    for (var plugin in pluginsManager.plugins) {
+        if (plugin.support(message)) {
+            plugin.handle(client, from, to, message);
+        }
+    }
+};
 
 /*
  * client.addListener('pm', function (from, message) { console.log(from + ' =>
  * ME: ' + message); parseMsg(from, '#eistitest', message); }); //
  */
 
+//@TODO Move this to plugin
 function parseMsg(from, to, message) {
     if ('!' === message[0]) {
         var cmd = message.split(' ');
@@ -40,18 +58,6 @@ function parseMsg(from, to, message) {
         // ex: !lastfm #channel ternel
         if (nconf.get('bot-name') == to) {
             to = '#eistibranlos';
-        }
-
-        // LastFM : Last Track
-        // @TODO : move lastfm code in a lastfm module
-        // @TODO : LastSong + Spotify link (see Spotify search API), + deezer
-        // link (Deezer API)
-        if ('!lastfm' == cmd[0] && undefined !== cmd[1]) {
-            pluginsManager.plugins.LastFM.LastSong(client, from, to, cmd, nconf.get('lastfm:api_key'), logger);
-        }
-
-        if ('!insult' == cmd[0]) {
-            pluginsManager.plugins.Misc.Insult(client, from, to, cmd);
         }
 
         if ('!link' == cmd[0]) {
@@ -69,8 +75,6 @@ function parseMsg(from, to, message) {
         if ('!reddit' == cmd[0]) {
             Reddit_getRandomLink(from, to, cmd);
         }
-    } else {
-        pluginsManager.plugins.Debilotron.Parser(client, from, to, message);
     }
 }
 

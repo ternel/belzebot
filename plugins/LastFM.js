@@ -1,7 +1,14 @@
 var LastFM = {};
 var http = require('http');
 
-LastFM.LastSong = function LastSong(client, from, to, cmd, api_key, logger) {
+LastFm.support = function (message) {
+    return message.match(/^!lastfm (.+?)/);
+};
+
+LastFM.handle = function (client, from, to, message) {
+    api_key = nconf.get('lastfm:api_key');
+    cmd = message.split(' ');
+    
     if (undefined !== logger) {
         logger.info("[LastFM] LastFM_GetLastSong");
     }
