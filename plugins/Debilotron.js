@@ -33,6 +33,10 @@ Debilotron.handle = function (client, from, to, cmd) {
         match = cmd.match(/T\'es (.+) ?(.+?)/);
         client.say(to, "S'toi le " + match[1]);
     }
+    
+    if (cmd.match(/poney/)) {
+        client.say(to, "♪♪ Des chevaux par milliers  ♪♪")
+    }
 
     if (cmd == "lol" || cmd == "\\o/") {
         client.say("Trop marrant :(");
