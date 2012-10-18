@@ -14,8 +14,6 @@ Misc.handle = function insult(client, from, to, message) {
     }
     
     client.say(to, "belzebot, il te chie à la gueule.");
-    
-    nconf.testerror();
 };
 
 module.exports.Misc = Misc;

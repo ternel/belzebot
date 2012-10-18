@@ -36,12 +36,8 @@ function PluginMessageListener(from, to, message) {
                 pluginObject.handle(client, from, to, message);
             }
         } catch(e) {
-            if (nconf.get('bot-name') == to) {
-                to = '#eistibranlos';
-            }
-            
-            client.say(to, e.message);
-            client.say(to, "Stack trace : "+ e.stack);
+            client.say(from, "Error " + e.message);
+            client.say(from, "Stack trace : "+ e.stack);
         }
     }
 };
