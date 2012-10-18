@@ -4,7 +4,7 @@ var CleverBot = require('../lib/cleverbot.js');
 
 Cbot = new CleverBot;
 
-function get_html_translation_table(table, quote_style) {
+CleverbotPlugin.get_html_translation_table = function(table, quote_style) {
     // http://kevin.vanzonneveld.net
     // + original by: Philip Peterson
     // + revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -163,7 +163,7 @@ function get_html_translation_table(table, quote_style) {
     return hash_map;
 }
 
-function html_entity_decode(string, quote_style) {
+CleverbotPlugin.html_entity_decode = function (string, quote_style) {
     // http://kevin.vanzonneveld.net
     // + original by: john (http://www.jd-tech.net)
     // + input by: ger
@@ -218,7 +218,7 @@ CleverbotPlugin.handle = function(client, from, to, message) {
     match = message.match(re);
 
     Cbot.write(match[1], function(data) {
-        client.say(to, html_entity_decode(data.message));
+        client.say(to, CleverbotPlugin.html_entity_decode(data.message));
     });
 };
 
