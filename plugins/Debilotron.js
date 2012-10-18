@@ -5,6 +5,13 @@ Debilotron.support = function (message) {
 };
 
 Debilotron.handle = function (client, from, to, cmd) {
+    // @TODO: ajouter la possibilité de préciser le chan sur lequel
+    // envoyer le message dans la commande
+    // ex: !lastfm #channel ternel
+    if (nconf.get('bot-name') == to) {
+        to = '#eistibranlos';
+    }
+    
     if (cmd.match(/réponse/gi) || cmd.match(/reponse/gi)) {
         client.say(to, 42);
     }

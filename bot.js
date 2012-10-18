@@ -28,13 +28,6 @@ client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
 
 function PluginMessageListener(from, to, message) {
-    // @TODO: ajouter la possibilité de préciser le chan sur lequel
-    // envoyer le message dans la commande
-    // ex: !lastfm #channel ternel
-    if (nconf.get('bot-name') == to) {
-        to = '#eistibranlos';
-    }
-    
     for (var plugin in pluginsManager.plugins) {
         pluginObject = pluginsManager.plugins[plugin];
         

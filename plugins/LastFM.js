@@ -8,6 +8,13 @@ LastFM.support = function (message) {
 };
 
 LastFM.handle = function (client, from, to, message) {
+    // @TODO: ajouter la possibilité de préciser le chan sur lequel
+    // envoyer le message dans la commande
+    // ex: !lastfm #channel ternel
+    if (nconf.get('bot-name') == to) {
+        to = '#eistibranlos';
+    }
+    
     api_key = nconf.get('lastfm:api_key');
     cmd = message.split(' ');
     

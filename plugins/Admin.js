@@ -21,9 +21,18 @@ Admin.handle = function (client, from, to, message) {
 };
 
 Admin.restart = function (client, from, to, cmd) {
+    // @TODO: ajouter la possibilité de préciser le chan sur lequel
+    // envoyer le message dans la commande
+    // ex: !lastfm #channel ternel
+    if (nconf.get('bot-name') == to) {
+        to = '#eistibranlos';
+    }
+    
     client.say(to, "Restarting bot in a few seconds ...");
-    sleep(5000);
-    process.exit(1);
+    
+    setTimeout(function () {
+        process.exit(1);
+    }, 5000);
 };
 
 Admin.update = function (client, from, to, cmd) {
