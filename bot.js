@@ -40,7 +40,8 @@ function PluginMessageListener(from, to, message) {
                 to = '#eistibranlos';
             }
             
-            client.say(to, e.error);
+            client.say(to, e.message);
+            client.say(to, "Stack trace : "+ e.stack);
         }
     }
 };
