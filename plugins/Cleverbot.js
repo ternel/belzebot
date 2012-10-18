@@ -21,4 +21,4 @@ Cleverbot.handle = function(client, from, to, message) {
     });
 };
 
-module.exports.Misc = Misc;
+module.exports.Cleverbot = Cleverbot;
