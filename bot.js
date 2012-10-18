@@ -29,10 +29,18 @@ client.addListener('message', parseMsg);
 
 function PluginMessageListener(from, to, message) {
     for (var plugin in pluginsManager.plugins) {
-        pluginObject = pluginsManager.plugins[plugin];
-        
-        if (pluginObject.support(message)) {
-            pluginObject.handle(client, from, to, message);
+        try {
+            pluginObject = pluginsManager.plugins[plugin];
+            
+            if (pluginObject.support(message)) {
+                pluginObject.handle(client, from, to, message);
+            }
+        } catch(e) {
+            if (nconf.get('bot-name') == to) {
+                to = '#eistibranlos';
+            }
+            
+            client.say(to, e.error);
         }
     }
 };
