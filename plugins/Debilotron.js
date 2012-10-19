@@ -25,7 +25,7 @@ Debilotron.handle = function (client, from, to, cmd) {
         client.say(to, "De rien " + from + ", ça m'a fait plaisir");
     }
 
-    if (cmd.match(/bonjour/gi) || cmd.match(/salut/gi) || cmd.match(/wop/gi) || cmd.match(/kikou/gi) || cmd.match(/yop/gi) || cmd.match(/bjour/gi)) {
+    if (cmd.match(/bonjour/gi) || cmd.match(/coucou/gi) || cmd.match(/salut/gi) || cmd.match(/wop/gi) || cmd.match(/kikou/gi) || cmd.match(/yop/gi) || cmd.match(/bjour/gi)) {
         client.say(to, "Coucou " + from);
     }
 
