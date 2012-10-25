@@ -14,10 +14,10 @@ LastFM.handle = function (client, from, to, message) {
     if (nconf.get('bot-name') == to) {
         to = '#eistibranlos';
     }
-    
+
     api_key = nconf.get('lastfm:api_key');
     cmd = message.split(' ');
-    
+
     if (undefined !== logger) {
         logger.info("[LastFM] LastFM_GetLastSong");
     }
@@ -65,12 +65,12 @@ LastFM.handle = function (client, from, to, message) {
         });
 
         if (undefined !== logger) {
-            logger.info("[LastFM] Got response: " + res.statusCode);
+            logger.info("[LastFM] - "+options.host+options.path+" - Got response: " + res.statusCode);
         }
 
     }).on('error', function(e) {
         if (undefined !== logger) {
-            logger.error("[LastFM] Got error: " + e.message);
+            logger.error("[LastFM] - "+options.host+options.path+" - Got error: " + e.message);
         }
     });
 };

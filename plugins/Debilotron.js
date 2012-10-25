@@ -12,11 +12,11 @@ Debilotron.handle = function (client, from, to, cmd) {
     if (nconf.get('bot-name') == to) {
         to = '#eistibranlos';
     }
-    
+
     if (cmd.match(/réponse/gi) || cmd.match(/reponse/gi)) {
         client.say(to, 42);
     }
-    
+
     if (cmd.match(/caca/gi) || cmd.match(/crotte/gi)) {
         client.say(to, "Yumi, c'est bon le caca !");
     }
@@ -33,7 +33,7 @@ Debilotron.handle = function (client, from, to, cmd) {
         match = cmd.match(/T\'es (.+) ?(.+?)/);
         client.say(to, "S'toi le " + match[1]);
     }
-    
+
     if (cmd.match(/poney/gi)) {
         client.say(to, "♪♪ Des poneys par milliers ♪♪");
     }

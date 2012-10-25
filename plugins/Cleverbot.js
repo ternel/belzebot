@@ -4,7 +4,7 @@ var CleverBot = require('../lib/cleverbot.js');
 
 Cbot = new CleverBot;
 
-CleverbotPlugin.get_html_translation_table = function(table, quote_style) {
+CleverbotPlugin.get_html_translation_table = function (table, quote_style) {
     // http://kevin.vanzonneveld.net
     // + original by: Philip Peterson
     // + revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -202,11 +202,11 @@ CleverbotPlugin.html_entity_decode = function (string, quote_style) {
     return tmp_str;
 }
 
-CleverbotPlugin.support = function(message) {
+CleverbotPlugin.support = function (message) {
     return message.match(/^!cleverbot (.+?)/gi);
 };
 
-CleverbotPlugin.handle = function(client, from, to, message) {
+CleverbotPlugin.handle = function (client, from, to, message) {
     // @TODO: ajouter la possibilité de préciser le chan sur lequel
     // envoyer le message dans la commande
     // ex: !lastfm #channel ternel
@@ -217,7 +217,7 @@ CleverbotPlugin.handle = function(client, from, to, message) {
     var re = new RegExp("!cleverbot (.*)");
     match = message.match(re);
 
-    Cbot.write(match[1], function(data) {
+    Cbot.write(match[1], function (data) {
         client.say(to, CleverbotPlugin.html_entity_decode(data.message));
     });
 };
