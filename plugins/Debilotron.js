@@ -44,7 +44,7 @@ Debilotron.handle = function (client, from, to, cmd) {
 
     randomNumber = Math.floor(Math.random()*101);
 
-    if (randomNumber == 0) {
+    if (randomNumber == 1) {
         client.say(to, "kamoulox!");
     }
 };
