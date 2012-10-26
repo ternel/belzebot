@@ -35,7 +35,7 @@ Admin.say = function (client, from, to, cmd) {
     message = "";
     
     for (i=3;i<cmd.length;i++) {
-        message += cmd[i];
+        message += cmd[i]+" ";
     }
 
     client.say(to, message);
