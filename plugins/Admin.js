@@ -18,7 +18,28 @@ Admin.handle = function (client, from, to, message) {
     if (cmd[2] == 'update') {
         this.update(client, from, to, cmd);
     }
+
+    if (cmd[2] == 'say') {
+        this.say(client, from, to, cmd);
+    }
 };
+
+Admin.say = function (client, from, to, cmd) {
+    // @TODO: ajouter la possibilité de préciser le chan sur lequel
+    // envoyer le message dans la commande
+    // ex: !lastfm #channel ternel
+    if (nconf.get('bot-name') == to) {
+        to = '#eistibranlos';
+    }
+
+    message = "";
+    
+    for (i=3;i<cmd.length;i++) {
+        message += cmd[i];
+    }
+
+    client.say(to, message);
+}
 
 Admin.restart = function (client, from, to, cmd) {
     // @TODO: ajouter la possibilité de préciser le chan sur lequel
