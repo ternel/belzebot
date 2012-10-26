@@ -39,7 +39,13 @@ Debilotron.handle = function (client, from, to, cmd) {
     }
 
     if (cmd == "lol" || cmd == "\\o/") {
-        client.say("Trop marrant :(");
+        client.say(to, "Trop marrant :(");
+    }
+
+    randomNumber = Math.floor(Math.random()*101);
+
+    if (randomNumber == 0) {
+        client.say(to, "kamoulox!");
     }
 };
 
