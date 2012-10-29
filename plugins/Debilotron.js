@@ -38,6 +38,10 @@ Debilotron.handle = function (client, from, to, cmd) {
         client.say(to, "♪♪ Des poneys par milliers ♪♪");
     }
 
+    if (cmd.match(/peep/gi)) {
+        client.say(to, "BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP  OOOOOOHHHHH");
+    }
+
     if (cmd == "lol" || cmd == "\\o/") {
         client.say(to, "Trop marrant :(");
     }
