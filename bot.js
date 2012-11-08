@@ -2,6 +2,7 @@ var nconf = require('nconf');
 var irc = require('irc');
 var http = require('http');
 var logger = require('./lib/logger.js');
+var restServer = require('./lib/restServer.js');
 var pluginsManager = require('./lib/pluginsManager.js');
 
 // First consider commandline arguments and environment variables, respectively.
@@ -25,17 +26,19 @@ var client = new irc.Client(nconf.get('irc:server'), nconf.get('bot-name'), {
 });
 
 client.addListener('topic', function(channel, topic, nick, message) {
-    client.say(channel, "Coucou \o/ ("+loadedMessage+")");
+    client.say(channel, "Tu as changé le topic... JAYJAY.");
 });
 
 client.addListener('message', PluginMessageListener);
 client.addListener('message', parseMsg);
 
+restServer.start(client);
+
 function PluginMessageListener(from, to, message) {
     for (var plugin in pluginsManager.plugins) {
         try {
             pluginObject = pluginsManager.plugins[plugin];
-            
+
             if (pluginObject.support(message)) {
                 pluginObject.handle(client, from, to, message);
             }
@@ -133,7 +136,7 @@ function Links_saveLink(from, to, cmd) {
 
     // save in redis
     redisClient.on("error", function(err) {
-        console.log("Error " + err);
+        logger.error(err);
     });
 
     redisClient.lpush(cat, url, redis.print);
@@ -150,12 +153,12 @@ function Links_lastsLink(from, to, cmd) {
     // get in redis
     redisClient.lrange(cat, 0, 10, function(err, replies) {
         if (err) {
-            return console.error("error response - " + err);
+            return logger.error("error response - " + err);
         }
 
-        console.log(replies.length + " replies:");
+        logger.log(replies.length + " replies:");
         replies.forEach(function(reply, i) {
-            console.log("    " + i + ": " + reply);
+            logger.info("    " + i + ": " + reply);
             client.say(to, "[Links:" + cat + "] " + reply);
         });
     });

@@ -5,6 +5,8 @@ Debilotron.support = function (message) {
     return (message[0] !== '!');
 };
 
+var dogs = ['Beethoven', 'Benji', 'Choupette', 'Copernic', 'Crockdur', 'Idéfix', 'Lassie', 'Le Clochard', 'Odie', 'Rex', 'Milou', 'Rintintin'];
+
 Debilotron.handle = function (client, from, to, cmd) {
     // @TODO: ajouter la possibilité de préciser le chan sur lequel
     // envoyer le message dans la commande
@@ -26,7 +28,13 @@ Debilotron.handle = function (client, from, to, cmd) {
     }
 
     if (cmd.match(/bonjour/gi) || cmd.match(/coucou/gi) || cmd.match(/salut/gi) || cmd.match(/wop/gi) || cmd.match(/kikou/gi) || cmd.match(/yop/gi) || cmd.match(/bjour/gi)) {
-        client.say(to, "Coucou " + from);
+
+        if (from.match(/mateo/gi)) {
+            var rand_index = Math.floor(Math.random() * (dogs.length + 1));
+            client.say(to, "Coucou " + dogs[rand_index]);
+        } else {
+            client.say(to, "Coucou " + from);
+        }
     }
 
     if (cmd.match(/T\'es (.+?)/)) {
