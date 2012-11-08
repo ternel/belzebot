@@ -47,7 +47,7 @@ Debilotron.handle = function (client, from, to, cmd) {
     }
 
     if (cmd.match(/peep/gi)) {
-        client.say(to, "BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP  OOOOOOHHHHH");
+        client.say(to, "BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP  OOOOOOHHHHH - http://www.youtube.com/watch?v=Pz-tV5na89U");
     }
 
     if (cmd == "lol" || cmd == "\\o/") {
