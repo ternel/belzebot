@@ -28,13 +28,15 @@ Debilotron.handle = function (client, from, to, cmd) {
     }
 
     if (cmd.match(/bonjour/gi) || cmd.match(/coucou/gi) || cmd.match(/salut/gi) || cmd.match(/wop/gi) || cmd.match(/kikou/gi) || cmd.match(/yop/gi) || cmd.match(/bjour/gi)) {
-
+        client.say(to, "Coucou " + from);
+        /*
         if (from.match(/mateo/gi)) {
             var rand_index = Math.floor(Math.random() * (dogs.length + 1));
             client.say(to, "Coucou " + dogs[rand_index]);
         } else {
             client.say(to, "Coucou " + from);
         }
+        //*/
     }
 
     if (cmd.match(/T\'es (.+?)/)) {
@@ -50,15 +52,19 @@ Debilotron.handle = function (client, from, to, cmd) {
         client.say(to, "BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP BO PEEP  OOOOOOHHHHH - http://www.youtube.com/watch?v=Pz-tV5na89U");
     }
 
+    /*
     if (cmd == "lol" || cmd == "\\o/") {
         client.say(to, "Trop marrant :(");
     }
+    //*/
 
+    /*
     randomNumber = Math.floor(Math.random()*101);
 
     if (randomNumber == 1) {
         client.say(to, "kamoulox!");
     }
+    //*/
 };
 
 module.exports.Debilotron = Debilotron;
