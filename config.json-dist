@@ -1,0 +1,13 @@
+{
+    "bot-name":"belzebot",
+    "debug":false,
+    "password":password,
+    "irc":{
+        "server":"irc.freenode.org",
+        "channels":["#test"]
+    },
+    "lastfm":{
+        "api_key":""
+    }
+}
+
